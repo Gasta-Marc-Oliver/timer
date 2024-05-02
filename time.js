@@ -1,32 +1,42 @@
+
 let count = 0;
-let timer;
+let intervalId;
 
-function updateCount() {
-  document.getElementById("count").textContent = count;
-}
+let startButton = document.getElementById("start");
+let pauseButton = document.getElementById("pause");
+let resumeButton = document.getElementById("resume");
+let stopButton = document.getElementById("stop");
+let countSpan = document.getElementById("count");
 
-function startTimer() {
-  timer = setInterval(() => {
-    count++;
-    updateCount();
-  }, 1000);
-}
+startButton.addEventListener("click", function() {
+    intervalId = setInterval(function() {
+        count++;
+        countSpan.textContent = count;
+    }, 1000);
+    startButton.disabled = true;
+    pauseButton.disabled = false;
+});
 
-function pauseTimer() {
-  clearInterval(timer);
-}
+pauseButton.addEventListener("click", function() {
+    clearInterval(intervalId);
+    pauseButton.disabled = true;
+    resumeButton.disabled = false;
+});
 
-function resumeTimer() {
-  startTimer();
-}
+resumeButton.addEventListener("click", function() {
+    intervalId = setInterval(function() {
+        count++;
+        countSpan.textContent = count;
+    }, 1000);
+    pauseButton.disabled = false;
+    resumeButton.disabled = true;
+});
 
-function stopTimer() {
-  clearInterval(timer);
-  count = 0;
-  updateCount();
-}
-
-document.getElementById("start").addEventListener("click", startTimer);
-document.getElementById("pause").addEventListener("click", pauseTimer);
-document.getElementById("resume").addEventListener("click", resumeTimer);
-document.getElementById("stop").addEventListener("click", stopTimer);
+stopButton.addEventListener("click", function() {
+    clearInterval(intervalId);
+    count = 0;
+    countSpan.textContent = count;
+    startButton.disabled = false;
+    pauseButton.disabled = true;
+    resumeButton.disabled = true;
+});
